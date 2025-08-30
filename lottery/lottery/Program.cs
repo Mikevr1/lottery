@@ -1,4 +1,16 @@
-﻿using System.Security.Cryptography.X509Certificates;
+﻿/*
+ * Name: Lottery Game
+ * Version: 1.0
+ * Author: Mike van Rooyen
+ * Tafe Student Number: 20154897
+ * Date: 30/08/2025
+ * Description: Lottery game Assesment 1
+ * ICT40120 Certificate IV in Information Technology 
+ *  
+ * 
+ * 
+*/
+
 
 namespace lottery
 {
@@ -24,18 +36,19 @@ namespace lottery
 
 
 
-            //BannerTitle();
-            //Instructions();
+            BannerTitle();
+            Instructions();
             Play();
             Results();
 
 
         }
-        // display banner title ASCII art
+        // display banner title as ASCII art
         //https://www.asciiart.eu/
         public static void BannerTitle()
         {
             Console.Clear();
+            Console.WriteLine();
             Console.BackgroundColor = ConsoleColor.Black;
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine(@"          _          _   _                         
@@ -51,7 +64,7 @@ namespace lottery
 
         }
 
-        // display instructions
+        // display instructions to user
         public static void Instructions()
         {
             Console.WriteLine(@"
@@ -66,7 +79,7 @@ namespace lottery
         }
 
 
-        // display results
+        // display results to user
         public static void Results()
         {
             Console.WriteLine();
@@ -84,7 +97,11 @@ namespace lottery
             }
             switch (Matches)
             {
-
+                case 0:
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("No Numbers Matched");
+                    Console.ForegroundColor = ConsoleColor.White;
+                    break;
                 case 1:
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine("You got 1 Numbers");
@@ -120,7 +137,7 @@ namespace lottery
                     break;
                 default:
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("No numbers match");
+                    Console.WriteLine("You got More than 6 Numbers");
                     Console.ForegroundColor = ConsoleColor.White;
                     break;
 
@@ -140,6 +157,7 @@ namespace lottery
             Console.WriteLine();
         }
 
+        //binnary search to find if a number is in range can be used on sorted arrays only
         public static bool BinnarySearch(int[] array, int value)
         {
              
@@ -150,7 +168,7 @@ namespace lottery
                 int mid = left + (right - left) / 2;
                 if (array[mid] == value)
                 {
-                    return true; // Value found 
+                    return true; // Value found return true
                 }
                 else if (array[mid] < value)
                 {
@@ -161,11 +179,11 @@ namespace lottery
                     right = mid - 1; // Search in the left half
                 }
             }
-            return false; // Value not found 
+            return false; // Value not found return false
         }
 
 
-        //linear search to find if a value is in array
+        //linear search to find if a repeated number has been entered can be used on unsorted arrays 
 
         public static bool LinearSearch(int[] array, int value)
         {
@@ -270,9 +288,10 @@ namespace lottery
                 //                (LinearSearch(UserPickedNumbersArray, userInput)))
 
 
+
                 while (!int.TryParse(Console.ReadLine(), out userInput) || userInput <= 0
-                        || (!BinnarySearch(SortedRangeNumbersArray,userInput)) 
-                        || (LinearSearch(UserPickedNumbersArray, userInput)))
+                       || (!BinnarySearch(SortedRangeNumbersArray, userInput))
+                       || (LinearSearch(UserPickedNumbersArray, userInput)))
 
 
                 {

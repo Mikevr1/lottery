@@ -215,10 +215,10 @@ namespace lottery
             }
 
             Console.WriteLine("Enter TOTAL of Numbers To Enter");
-            while (!int.TryParse(Console.ReadLine(), out Total) || Total <= 0)
+            while (!int.TryParse(Console.ReadLine(), out Total) || Total <= 0 || Total > Range)
             {
              Console.ForegroundColor = ConsoleColor.Red;
-             Console.WriteLine("ERROR Enter a value");
+             Console.WriteLine("ERROR Enter a value Less Than Range");
              Console.ForegroundColor = ConsoleColor.White;
             }
             TotalNumbersArray = new int[Total];

@@ -11,6 +11,7 @@ namespace lottery
 
         private static int[] TotalNumbersArray = new int[Total];// numbers selected by user
         private static int[] RangeNumbersArray = new int[Range];// numbers to select from
+        private static int[] SortedRangeNumbersArray = new int[Range];// sorted numbers to select from
         private static int[] UserPickedNumbersArray = new int[Total];// numbers picked by user
         private static int[] SystemPickedNumbersArray = new int[Total];// numbers picked by System
         private static int[] MatchedNumbersArray = new int[Total];// numbers matched by user and system 
@@ -23,8 +24,8 @@ namespace lottery
 
 
 
-            BannerTitle();
-            Instructions();
+            //BannerTitle();
+            //Instructions();
             Play();
             Results();
 
@@ -71,9 +72,9 @@ namespace lottery
             Console.WriteLine();
 
             int Matches = 0;
-            for(int i=0; i< Total; i++)
+            for (int i = 0; i < Total; i++)
             {
-               
+
                 if (UserPickedNumbersArray[i] == SystemPickedNumbersArray[i])
                 {
                     MatchedNumbersArray[i] = UserPickedNumbersArray[i];
@@ -83,49 +84,51 @@ namespace lottery
             }
             switch (Matches)
             {
-                
+
                 case 1:
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine("You got 1 Numbers");
                     Console.ForegroundColor = ConsoleColor.White;
                     break;
-                    case 2:
+                case 2:
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine("You got 2 Numbers");
                     Console.ForegroundColor = ConsoleColor.White;
                     break;
-                    case 3:
-                     Console.ForegroundColor = ConsoleColor.Green;
-                     Console.WriteLine("You got 3 Numbers");
-                     Console.ForegroundColor = ConsoleColor.White;
+                case 3:
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("You got 3 Numbers");
+                    Console.ForegroundColor = ConsoleColor.White;
                     break;
-                    case 4:
-                     Console.ForegroundColor = ConsoleColor.Green;
-                     Console.WriteLine("You got 4 Numbers");
-                     Console.ForegroundColor = ConsoleColor.White;
-                   
+                case 4:
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("You got 4 Numbers");
+                    Console.ForegroundColor = ConsoleColor.White;
+
                     break;
-                    case 5:
-                     Console.ForegroundColor = ConsoleColor.Green;
-                     Console.WriteLine("You got 5 numbers");
-                     Console.ForegroundColor = ConsoleColor.White;
-                        
+                case 5:
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("You got 5 numbers");
+                    Console.ForegroundColor = ConsoleColor.White;
+
                     break;
-                    case 6:
-                     Console.ForegroundColor = ConsoleColor.Green;
-                     Console.WriteLine("You got 6 Numbers");
-                     Console.ForegroundColor = ConsoleColor.White;
-                    
+                case 6:
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("You got 6 Numbers");
+                    Console.ForegroundColor = ConsoleColor.White;
+
                     break;
-                    default:
+                default:
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("You got more than 6 numbers");
+                    Console.WriteLine("No numbers match");
                     Console.ForegroundColor = ConsoleColor.White;
                     break;
 
-
             }
-           foreach (int i in MatchedNumbersArray)
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine();
+            Console.WriteLine("Matched Numbers");
+            foreach (int i in MatchedNumbersArray)
             {
                 if (i != 0)
                 {
@@ -133,15 +136,38 @@ namespace lottery
                     Console.Write("");
                 }
             }
-            
 
+            Console.WriteLine();
         }
 
+        public static bool BinnarySearch(int[] array, int value)
+        {
+             
+            int left = 0;
+            int right = array.Length - 1;
+            while (left <= right)
+            {
+                int mid = left + (right - left) / 2;
+                if (array[mid] == value)
+                {
+                    return true; // Value found 
+                }
+                else if (array[mid] < value)
+                {
+                    left = mid + 1; // Search in the right half
+                }
+                else
+                {
+                    right = mid - 1; // Search in the left half
+                }
+            }
+            return false; // Value not found 
+        }
 
 
         //linear search to find if a value is in array
 
-        public static bool IsValueInArray(int[] array, int value)
+        public static bool LinearSearch(int[] array, int value)
         {
             foreach (int item in array)
             {
@@ -179,6 +205,7 @@ namespace lottery
             }
             TotalNumbersArray = new int[Total];
             RangeNumbersArray = new int[Range];
+            SortedRangeNumbersArray = new int[Range];
             UserPickedNumbersArray = new int[Total];
             SystemPickedNumbersArray = new int[Total];
             MatchedNumbersArray = new int[Total];
@@ -186,13 +213,15 @@ namespace lottery
             for (int i = 0; i < Range; i++)
             {
                 RangeNumbersArray[i] = i + 1;
-              
+                SortedRangeNumbersArray[i] = i + 1;
             }
+
+
             Console.Clear();
             Console.WriteLine("Range of Numbers ");
             Console.ForegroundColor = ConsoleColor.White;
 
-            foreach (int i in RangeNumbersArray)
+            foreach (int i in SortedRangeNumbersArray)
             {
             Console.Write(" " + i);
             Console.Write("");
@@ -213,7 +242,7 @@ namespace lottery
 
 
             Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine("Range of Numbers Randomized");
+            Console.WriteLine("Range of Numbers Randomized in Bucket");
             Console.ForegroundColor = ConsoleColor.White;
             
             foreach (int i in RangeNumbersArray)
@@ -232,14 +261,18 @@ namespace lottery
             for (int i = 0; i < Total; i++)
             {
 
-                //validate user input using
-                //int.TryParse and check if number is in range and not already picked
+                //  validate user input using
+                //   check if number is in range and not already picked
 
                 int userInput;
-                while (!int.TryParse(Console.ReadLine(), out userInput) || userInput <= 0
-                                || (!IsValueInArray(RangeNumbersArray, userInput)) || 
-                                (IsValueInArray(UserPickedNumbersArray, userInput)))
+                //while (!int.TryParse(Console.ReadLine(), out userInput) || userInput <= 0
+                //                || (!LinearSearch(RangeNumbersArray, userInput)) ||
+                //                (LinearSearch(UserPickedNumbersArray, userInput)))
 
+
+                while (!int.TryParse(Console.ReadLine(), out userInput) || userInput <= 0
+                        || (!BinnarySearch(SortedRangeNumbersArray,userInput)) 
+                        || (LinearSearch(UserPickedNumbersArray, userInput)))
 
 
                 {
@@ -254,7 +287,7 @@ namespace lottery
                 
             }
             Console.ForegroundColor = ConsoleColor.Cyan; 
-            Console.WriteLine("user picked");
+            Console.WriteLine("user picked numbers");
             Console.ForegroundColor = ConsoleColor.White;
             foreach (int i in UserPickedNumbersArray)
             {
@@ -265,7 +298,7 @@ namespace lottery
             }
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine();   
-            Console.WriteLine("System picked");
+            Console.WriteLine("System picked numbers");
             Console.ForegroundColor = ConsoleColor.White;
             foreach (int i in SystemPickedNumbersArray)
             {

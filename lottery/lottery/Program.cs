@@ -16,13 +16,13 @@ namespace lottery
 {
     internal class Program
     {
+        // these variabls Could be Constants preset in the code
+        private static int Range ;// the amount of  numbers that the user will pick
+        private static int Total ;//the amount of numbers that can be entered by the user
 
-        private static int Range ;// the numbers that the user will pick
-        private static int Total ;//the numbers that can be entered by the user
 
-
-        private static int[] TotalNumbersArray = new int[Total];// numbers selected by user
-        private static int[] RangeNumbersArray = new int[Range];// numbers to select from
+        private static int[] TotalNumbersArray = new int[Total];// Total numbers selected by user
+        private static int[] RangeNumbersArray = new int[Range];// Range of numbers to select from
         private static int[] SortedRangeNumbersArray = new int[Range];// sorted numbers to select from
         private static int[] UserPickedNumbersArray = new int[Total];// numbers picked by user
         private static int[] SystemPickedNumbersArray = new int[Total];// numbers picked by System
@@ -104,7 +104,7 @@ namespace lottery
                     break;
                 case 1:
                     Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine("You got 1 Numbers");
+                    Console.WriteLine("You got 1 Number");
                     Console.ForegroundColor = ConsoleColor.White;
                     break;
                 case 2:
@@ -136,15 +136,17 @@ namespace lottery
 
                     break;
                 default:
-                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine("You got More than 6 Numbers");
                     Console.ForegroundColor = ConsoleColor.White;
                     break;
 
             }
+            // display the numbers that matched
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine();
             Console.WriteLine("Matched Numbers");
+            Console.ForegroundColor = ConsoleColor.White;
             foreach (int i in MatchedNumbersArray)
             {
                 if (i != 0)
@@ -166,11 +168,11 @@ namespace lottery
             while (left <= right)
             {
                 int mid = left + (right - left) / 2;
-                if (array[mid] == value)
+                if (array[mid] == value) //center match
                 {
                     return true; // Value found return true
                 }
-                else if (array[mid] < value)
+                else if (array[mid] < value) //center is less than value
                 {
                     left = mid + 1; // Search in the right half
                 }
@@ -210,7 +212,7 @@ namespace lottery
             while (!int.TryParse(Console.ReadLine(), out Range) || Range <= 0)
             {
              Console.ForegroundColor = ConsoleColor.Red;
-             Console.WriteLine("ERROR enter a value");
+             Console.WriteLine("ERROR enter a value greater than 1");
              Console.ForegroundColor = ConsoleColor.White;
             }
 
@@ -230,8 +232,8 @@ namespace lottery
 
             for (int i = 0; i < Range; i++)
             {
-                RangeNumbersArray[i] = i + 1;
-                SortedRangeNumbersArray[i] = i + 1;
+                RangeNumbersArray[i] = i + 1; //will be randomized
+                SortedRangeNumbersArray[i] = i + 1; //for binary search no need to sort
             }
 
 
@@ -250,7 +252,7 @@ namespace lottery
 
             ScrambeledEggs.Shuffle(RangeNumbersArray);//randomize the array numbers
 
-            // system picked numbers first numbers of the randomized array so no duplicates
+            // system sequentially picked the first numbers from the randomized array so no duplicates
             int Temp;
             for (int i = 0; i < Total; i++)
             {
@@ -279,16 +281,14 @@ namespace lottery
             for (int i = 0; i < Total; i++)
             {
 
-                //  validate user input using
-                //   check if number is in range and not already picked
+                
 
                 int userInput;
-                //while (!int.TryParse(Console.ReadLine(), out userInput) || userInput <= 0
-                //                || (!LinearSearch(RangeNumbersArray, userInput)) ||
-                //                (LinearSearch(UserPickedNumbersArray, userInput)))
 
-
-
+                //  validate user input using
+                //   check for non numbers 
+                //   check using binary search if number is in range
+                //   check using linear search if number has already been picked
                 while (!int.TryParse(Console.ReadLine(), out userInput) || userInput <= 0
                        || (!BinnarySearch(SortedRangeNumbersArray, userInput))
                        || (LinearSearch(UserPickedNumbersArray, userInput)))
